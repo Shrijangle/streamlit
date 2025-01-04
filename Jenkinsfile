@@ -11,26 +11,14 @@ pipeline {
                 git url: 'https://github.com/Shrijangle/streamlit.git', branch: 'main'
             }
         }
-               }
-        stage('Build Docker Image') {
+
+        stage('Build Docker Image') { // Moved this inside the 'stages' block
             steps {
                 sh 'docker build -t myimage .'
             }
         }
-       stage('Build and Push Image') {
+
+        stage('Build and Push Image') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub_credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
-                    sh 'docker tag myimage $DOCKER_USERNAME/myimage'
-                    sh 'docker push $DOCKER_USERNAME/myimage'
-                }
-
-            }
-        }
-        stage('Deploy application to kubernetes') {
-            steps {
-                sh 'kubectl apply -f my-deployment.yml'
-            }
-        }
-    }
-}
+                    sh 'ech
