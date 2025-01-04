@@ -11,11 +11,7 @@ pipeline {
                 git url: 'https://github.com/Shrijangle/streamlit.git', branch: 'main'
             }
         }
-       stage('cleanup stage') {
-            steps {
-                sh 'docker rmi -f myimage'
-                            }
-        }
+               }
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t myimage .'
@@ -23,7 +19,7 @@ pipeline {
         }
        stage('Build and Push Image') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_credential', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     sh 'echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin'
                     sh 'docker tag myimage $DOCKER_USERNAME/myimage'
                     sh 'docker push $DOCKER_USERNAME/myimage'
