@@ -1,7 +1,7 @@
 pipeline {
     agent {
         node {
-            label 'JenkinsSlaveNodeLabel'
+            label 'jenkin_slave_credential'
         }
     }
 
